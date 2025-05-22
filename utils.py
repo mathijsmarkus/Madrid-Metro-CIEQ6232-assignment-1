@@ -153,7 +153,7 @@ def generate_graph(gtfs_feed,
     return G
 
 
-def plot_graph(G, space="L", back_map=False, MAPS_API_KEY=None, color_by="",edge_color_by="", export_name=""):
+def plot_graph(G, space="L", back_map=False, MAPS_API_KEY=None, color_by="",edge_color_by="", edge_color_by_new="", export_name=""):
     '''Plots a networkx graph. Arguments:
     -G: the nx graph
     -space: either "L" or "P" depending on which space you are plotting
@@ -207,8 +207,9 @@ def plot_graph(G, space="L", back_map=False, MAPS_API_KEY=None, color_by="",edge
 
     # Define the visualization
     if color_by:
-        mapper = LinearColorMapper(palette=RdYlGn11)
-        graph.node_renderer.glyph = Circle(size=7,fill_color={'field': color_by, 'transform': mapper})
+        # mapper = LinearColorMapper(palette=RdYlGn11)
+        # graph.node_renderer.glyph = Circle(size=7,fill_color={'field': color_by, 'transform': mapper})
+        graph.node_renderer.glyph = Circle(size=7, fill_color=color_by)
     else:
         graph.node_renderer.glyph = Circle(size=7)
 
@@ -217,6 +218,10 @@ def plot_graph(G, space="L", back_map=False, MAPS_API_KEY=None, color_by="",edge
         graph.edge_renderer.glyph = MultiLine(line_width=4, line_alpha=.5, line_color={'field': edge_color_by, 'transform': mapper})      
         color_bar = ColorBar(color_mapper=mapper, label_standoff=12, border_line_color=None, location=(0,0))
         p.add_layout(color_bar,"right")
+
+    if edge_color_by_new:
+        graph.edge_renderer.glyph = MultiLine(line_width=4, line_alpha=.5, line_color=edge_color_by_new)
+
     
     graph.node_renderer.selection_glyph = Circle(fill_color='blue')
     graph.node_renderer.hover_glyph = Circle(fill_color='red')
